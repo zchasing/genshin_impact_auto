@@ -1,0 +1,3 @@
+2023-11-23 18:20:12.522 | SUCCESS  | __main__:<module>:32 - A success message.
+2023-11-23 18:20:12.523 | ERROR    | __main__:<module>:33 - An error message.
+2023-11-23 18:20:12.523 | CRITICAL | __main__:<module>:34 - A critical message.
