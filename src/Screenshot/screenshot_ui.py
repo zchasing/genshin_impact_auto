@@ -1,7 +1,14 @@
+import numpy as np
 import win32gui
+from PIL import Image, ImageQt
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QLabel, QPushButton, QCheckBox, QLineEdit, QMessageBox
 from PyQt5.QtCore import QTimer
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QImage
+
+from src.Screenshot.arr2qimg import arr2qimg
+from src.Screenshot.screenshot_pyqt import get_screenshot_pyqt
+from src.Screenshot.screenshot_win32 import capture_window
+
 
 class ScreenshotApp(QMainWindow):
     # 初始化窗口
@@ -70,12 +77,13 @@ class ScreenshotApp(QMainWindow):
         except:
             QMessageBox.information(None, '提示', '请输入整数！')
     def take_screenshot(self):
-        # 寻找窗口
-        hwnd = win32gui.FindWindow(None, "MuMu模拟器12")
-        # 获取主屏幕
-        screen = QApplication.primaryScreen()
         # 获取窗口截图
-        img = screen.grabWindow(hwnd).toImage()
+        # img = get_screenshot_pyqt()
+        window_title = "MuMu模拟器12"
+        hwnd = win32gui.FindWindow(None, window_title)
+        img_pil = capture_window(hwnd)
+        img_arr = np.array(img_pil)
+        img = arr2qimg(img_arr)
         # 存在窗口则显示，否则输出未找到
         if img:
             # 将img转换为pixmap用于在标签中显示

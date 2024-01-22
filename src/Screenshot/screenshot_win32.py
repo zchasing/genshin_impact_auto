@@ -6,6 +6,8 @@ import numpy as np
 from PIL import Image
 import time
 from get_dpi_scale import *
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtCore import QByteArray, QBuffer
 
 # def get_dpi_scale_factor():
 #     horizontal_pixels = win32api.GetSystemMetrics(0)  # SM_CXSCREEN
@@ -48,17 +50,19 @@ def capture_window(hwnd):
 
     return img
 
-begin = time.time()
-# 替换为你想查找的程序的标题
-window_title = "MuMu模拟器12"
-hwnd = win32gui.FindWindow(None, window_title)
+if __name__ == "__main__":
 
-if hwnd != 0:
-    # 截图并保存
-    img = capture_window(hwnd)
-    img.save("screenshot_win32.jpg")
+    begin = time.time()
+    # 替换为你想查找的程序的标题
+    window_title = "MuMu模拟器12"
+    hwnd = win32gui.FindWindow(None, window_title)
 
-    end = time.time()
-    print(f"成功截图，保存为 screenshot_win32.jpg,用时：{int((end - begin)*1000)}ms")
-else:
-    print(f"未找到标题为'{window_title}'的窗口")
+    if hwnd != 0:
+        # 截图并保存
+        img = capture_window(hwnd)
+        img.save("screenshot_win32.jpg")
+
+        end = time.time()
+        print(f"成功截图，保存为 screenshot_win32.jpg,用时：{int((end - begin)*1000)}ms")
+    else:
+        print(f"未找到标题为'{window_title}'的窗口")

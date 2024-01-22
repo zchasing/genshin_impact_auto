@@ -9,11 +9,11 @@ import time
 from src.path import PATH_DATA_IMGRES
 
 
-def get_screenshot():
+def get_screenshot_pyqt():
     # 创建QApplication实例和初始化
-    app = QApplication(sys.argv)
+    # app = QApplication(sys.argv)
 
-    begin = time.time()
+    # begin = time.time()
     hwnd = win32gui.FindWindow(None, "MuMu模拟器12")
 
     # 获取主屏幕
