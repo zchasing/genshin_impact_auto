@@ -1,3 +1,4 @@
+import traceback
 import numpy as np
 import win32gui
 from PIL import Image, ImageQt
@@ -77,29 +78,35 @@ class ScreenshotApp(QMainWindow):
         except:
             QMessageBox.information(None, '提示', '请输入整数！')
     def take_screenshot(self):
-        # 获取窗口截图
-        # img = get_screenshot_pyqt()
-        window_title = "MuMu模拟器12"
-        hwnd = win32gui.FindWindow(None, window_title)
-        img_pil = capture_window(hwnd)
-        img_arr = np.array(img_pil)
-        img = arr2qimg(img_arr)
-        # 存在窗口则显示，否则输出未找到
-        if img:
-            # 将img转换为pixmap用于在标签中显示
-            pixmap = QPixmap.fromImage(img)
-            # 计算宽高，等下等比缩放
-            w_o = pixmap.width()
-            h_o = pixmap.height()
-            w = 800
-            h = int(w / w_o * h_o)
-            # 等比缩放
-            pixmap = pixmap.scaled(w, h, aspectRatioMode=1)
+        try:
+            # 获取窗口截图
+            # img = get_screenshot_pyqt()
+            img = None
+            window_title = "MuMu模拟器12"
+            hwnd = win32gui.FindWindow(None, window_title)
+            if hwnd:
+                img_pil = capture_window(hwnd)
+                img_arr = np.array(img_pil)
+                img = arr2qimg(img_arr)
+            # 存在窗口则显示，否则输出未找到
+            if img:
+                # 将img转换为pixmap用于在标签中显示
+                pixmap = QPixmap.fromImage(img)
+                # 计算宽高，等下等比缩放
+                w_o = pixmap.width()
+                h_o = pixmap.height()
+                w = 800
+                h = int(w / w_o * h_o)
+                # 等比缩放
+                pixmap = pixmap.scaled(w, h, aspectRatioMode=1)
 
-            # 将截图显示在 QLabel 中
-            self.label.setPixmap(pixmap)
-        else:
-            print("Window not found.")
+                # 将截图显示在 QLabel 中
+                self.label.setPixmap(pixmap)
+            else:
+                print("Window not found.")
+        except Exception as e:
+            traceback.format_exc()
+            QMessageBox.information(None, '提示', e)
 
 # 格式程序，不用管
 if __name__ == '__main__':

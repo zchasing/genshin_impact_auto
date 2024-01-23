@@ -1,6 +1,6 @@
 import os
 from matplotlib import pyplot as plt
-from src.Screenshot.screenshot_pyqt import get_screenshot
+from src.Screenshot.screenshot_pyqt import get_screenshot_pyqt
 from src.ImageIdentification.qimg2cv2 import qimg2cv2
 from src.path import PATH_DATA_IMGRES
 import cv2
@@ -41,7 +41,7 @@ def match_template(image, template_path, threshold=0.8):
 
 if __name__ == "__main__":
     # 输入图像和模板图像路径
-    img = get_screenshot()
+    img = get_screenshot_pyqt()
     screenshot = qimg2cv2(img)
     template_path = os.path.join(PATH_DATA_IMGRES, "imgres0.jpg")
 
