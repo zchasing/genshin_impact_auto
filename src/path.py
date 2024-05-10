@@ -13,6 +13,7 @@ if sys.path[1] != PATH_SRC:
 PATH_DATA = os.path.join(PATH_ROOT, "data")
 PATH_DATA_SETTING = os.path.join(PATH_ROOT, "data\\setting")
 PATH_DATA_IMGRES = os.path.join(PATH_ROOT, "data\\imgresource")
+PATH_DATA_DATASET = os.path.join(PATH_ROOT, "data\\dataset")
 
 # print(PATH_ROOT, PATH_DATA, PATH_SRC, PATH_DATA_SETTING)
 # print(sys.path)

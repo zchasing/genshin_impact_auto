@@ -6,15 +6,16 @@ from PyQt5.QtGui import QImage
 import sys
 import time
 
-from src.path import PATH_DATA_IMGRES
+from src.gettimestr import gettimestr
+from src.path import PATH_DATA_DATASET
 
 
 def get_screenshot_pyqt():
     # 创建QApplication实例和初始化
-    # app = QApplication(sys.argv)
+    app = QApplication(sys.argv)
 
     # begin = time.time()
-    hwnd = win32gui.FindWindow(None, "MuMu模拟器12")
+    hwnd = win32gui.FindWindow(None, "原神")
 
     # 获取主屏幕
     screen = QApplication.primaryScreen()
@@ -31,5 +32,6 @@ def get_screenshot_pyqt():
     return img
 
 if __name__ == "__main__":
-    img = get_screenshot()
-    img.save(os.path.join(PATH_DATA_IMGRES, "screenshot_pyqt.jpg"))
+    img = get_screenshot_pyqt()
+    file_name = gettimestr()
+    img.save(os.path.join(PATH_DATA_DATASET, file_name))

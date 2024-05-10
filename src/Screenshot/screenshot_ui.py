@@ -1,3 +1,4 @@
+import os
 import traceback
 import numpy as np
 import win32gui
@@ -9,12 +10,16 @@ from PyQt5.QtGui import QPixmap, QImage
 from src.Screenshot.arr2qimg import arr2qimg
 from src.Screenshot.screenshot_pyqt import get_screenshot_pyqt
 from src.Screenshot.screenshot_win32 import capture_window
+from src.gettimestr import gettimestr
+from src.path import PATH_DATA_DATASET
 
 
 class ScreenshotApp(QMainWindow):
     # 初始化窗口
     def __init__(self):
         super().__init__()
+        # self.window_title = "MuMu模拟器12"
+        self.window_title = "原神"
         self.initUI()
         self.signal_connection()
         self.timer_setup()
@@ -45,14 +50,14 @@ class ScreenshotApp(QMainWindow):
         layout.addWidget(self.le_time_interval)
         self.le_time_interval.setText('50')
         # 按钮
-        self.screenshot_button = QPushButton('Take Screenshot', self)
+        self.screenshot_button = QPushButton('Save Screenshot', self)
         layout.addWidget(self.screenshot_button)
         # 设置定时器
         self.timer = QTimer(self)
         self.msg_flag = 0
     
     def signal_connection(self):
-        self.screenshot_button.clicked.connect(self.take_screenshot)
+        self.screenshot_button.clicked.connect(self.save_screenshot)
         self.timer.timeout.connect(self.take_screenshot)
         self.le_time_interval.editingFinished.connect(self.timer_setup)
         self.cb_auto_screen.stateChanged.connect(self.timer_setup)
@@ -77,13 +82,13 @@ class ScreenshotApp(QMainWindow):
             return value
         except:
             QMessageBox.information(None, '提示', '请输入整数！')
+
     def take_screenshot(self):
         try:
             # 获取窗口截图
             # img = get_screenshot_pyqt()
             img = None
-            window_title = "MuMu模拟器12"
-            hwnd = win32gui.FindWindow(None, window_title)
+            hwnd = win32gui.FindWindow(None, self.window_title)
             if hwnd:
                 img_pil = capture_window(hwnd)
                 img_arr = np.array(img_pil)
@@ -104,6 +109,22 @@ class ScreenshotApp(QMainWindow):
                 self.label.setPixmap(pixmap)
             else:
                 print("Window not found.")
+        except Exception as e:
+            traceback.format_exc()
+            QMessageBox.information(None, '提示', e)
+
+    def save_screenshot(self):
+        try:
+            # 获取窗口截图
+            # img = get_screenshot_pyqt()
+            img = None
+            hwnd = win32gui.FindWindow(None, self.window_title)
+            if hwnd:
+                img = capture_window(hwnd)
+                file_name = gettimestr()
+                img.save(os.path.join(PATH_DATA_DATASET, file_name))
+            # 存在窗口则显示，否则输出未找到
+
         except Exception as e:
             traceback.format_exc()
             QMessageBox.information(None, '提示', e)
